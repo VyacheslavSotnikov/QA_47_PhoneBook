@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeMethod;
 
 import java.time.Duration;
 
-public class ApplicationManager {
+public class ApplicationManager_PB {
 
     private WebDriver driver;
 
