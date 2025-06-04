@@ -47,4 +47,46 @@ public class LoginTests_PB extends ApplicationManager_PB {
         LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
         loginPagePB.typeLoginForm(user);
     }
+
+    @Test
+    public void RegistrationPositiveTest() {
+        User user = new User ("sotiga2022@gmail.com", "Sh12345!@");
+        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
+        homePagePB.clickBtnLoginHeader();
+        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
+        loginPagePB.typeRegistrationForm(user);
+    }
+
+    @Test
+    public void RegistrationNegativeTest_wrongEmail() {
+        User user = new User ("sotiga2020gmail.com", "Sh12345!@");
+        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
+        homePagePB.clickBtnLoginHeader();
+        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
+        loginPagePB.typeRegistrationForm(user);
+        loginPagePB.closeAlert();
+        Assert.assertTrue(loginPagePB.isErrorMassagePresent("Registration failed with code 400"));
+    }
+
+    @Test
+    public void RegistrationNegativeTest_wrongPassword() {
+        User user = new User ("sotiga2020@gmail.com", "111");
+        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
+        homePagePB.clickBtnLoginHeader();
+        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
+        loginPagePB.typeRegistrationForm(user);
+        loginPagePB.closeAlert();
+        Assert.assertTrue(loginPagePB.isErrorMassagePresent("Registration failed with code 400"));
+    }
+
+    @Test
+    public void RegistrationNegativeTest_existEmail() {
+        User user = new User ("sotiga2020@gmail.com", "Sh12345!@");
+        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
+        homePagePB.clickBtnLoginHeader();
+        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
+        loginPagePB.typeRegistrationForm(user);
+        loginPagePB.closeAlert();
+        Assert.assertTrue(loginPagePB.isErrorMassagePresent("Registration failed with code 409"));
+    }
 }
