@@ -28,8 +28,11 @@ public class LoginPage_PB extends BasePage_PB {
     @FindBy(xpath = "//button[text()='Login']")
     WebElement btnLoginBody;
 
+    @FindBy(xpath = "//button[text()='Registration']")
+    WebElement btnRegistrationBody;
+
     @FindBy(xpath = "//div[@class='login_login__3EHKB']/div")
-    WebElement errorMassageLogin;
+    WebElement errorMassageLoginRegistration;
 
 
     public void typeLoginForm (User user){
@@ -42,6 +45,12 @@ public class LoginPage_PB extends BasePage_PB {
 //        btnLoginBody.click();
     }
 
+    public void typeRegistrationForm (User user){
+        inputEmail.sendKeys(user.getUsername());
+        inputPassword.sendKeys(user.getPassword());
+        btnRegistrationBody.click();
+    }
+
     public void closeAlert(){
         Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
                 until(ExpectedConditions.alertIsPresent());
@@ -50,7 +59,6 @@ public class LoginPage_PB extends BasePage_PB {
     }
 
     public boolean isErrorMassagePresent(String message){
-        return isTextInElementPresent(errorMassageLogin, message);
+        return isTextInElementPresent(errorMassageLoginRegistration, message);
     }
-
 }
