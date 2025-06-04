@@ -1,11 +1,16 @@
 package pages;
 
 import dto.User;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage_PB extends BasePage_PB {
 
@@ -23,6 +28,9 @@ public class LoginPage_PB extends BasePage_PB {
     @FindBy(xpath = "//button[text()='Login']")
     WebElement btnLoginBody;
 
+    @FindBy(xpath = "//div[@class='login_login__3EHKB']/div")
+    WebElement errorMassageLogin;
+
 
     public void typeLoginForm (User user){
         inputEmail.sendKeys(user.getUsername());
@@ -33,4 +41,16 @@ public class LoginPage_PB extends BasePage_PB {
 //        inputPassword.sendKeys(password);
 //        btnLoginBody.click();
     }
+
+    public void closeAlert(){
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
+                until(ExpectedConditions.alertIsPresent());
+        System.out.println(alert.getText());
+        alert.accept();
+    }
+
+    public boolean isErrorMassagePresent(String message){
+        return isTextInElementPresent(errorMassageLogin, message);
+    }
+
 }
