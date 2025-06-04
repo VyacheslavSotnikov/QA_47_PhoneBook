@@ -24,7 +24,7 @@ public class ApplicationManager_PB {
 
     @AfterMethod
     public void tearDown(){
-        //if(driver != null)
-        // driver.quit();
+//        if(driver != null)
+//         driver.quit();
     }
 }
