@@ -1,50 +1,74 @@
 package ui_tests;
 
-import dto.User;
+import dto.UserLombok;
 import manager.ApplicationManager_PB;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.ContactsPage;
 import pages.HomePage_PB;
 import pages.LoginPage_PB;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
-
 public class LoginTests_PB extends ApplicationManager_PB {
+
+    private LoginPage_PB loginPagePB;
+
+    @BeforeMethod
+    public void goToLoginPage(){
+        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
+        homePagePB.clickBtnLoginHeader();
+        loginPagePB = new LoginPage_PB(getDriver());
+    }
 
     @Test
     public void loginNegativeTest_wrongPassword() {
-        User user = new User ("sotiga2015@gmail.com", "Sh12345!2");
-        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
-        homePagePB.clickBtnLoginHeader();
-        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
-        loginPagePB.typeLoginForm(user);
+        UserLombok userLombok = UserLombok.builder()
+                .username ("sotiga2015@gmail.com")
+                .password("123")
+                        .build();
+        loginPagePB.typeLoginForm(userLombok);
         loginPagePB.closeAlert();
-        Assert.assertTrue(loginPagePB.isErrorMassagePresent("Login Failed with code 401"));
+        Assert.assertTrue(loginPagePB.isErrorMessageLogIn401());
+    }
 
+    @Test
+    public void loginNegativeTest_EmptyPassword() {
+        UserLombok userLombok = UserLombok.builder()
+                .username ("sotiga2015@gmail.com")
+                .password("")
+                .build();
+        loginPagePB.typeLoginForm(userLombok);
+        loginPagePB.closeAlert();
+        Assert.assertTrue(loginPagePB.isErrorMessageLogIn401());
     }
 
     @Test
     public void loginNegativeTest_wrongEmail() {
-        User user = new User ("sotiga2015gmail.com", "Sh12345!2");
-        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
-        homePagePB.clickBtnLoginHeader();
-        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
-        loginPagePB.typeLoginForm(user);
+        UserLombok userLombok = UserLombok.builder()
+                .username ("sotiga2015gmail.com")
+                .password("Sh12345!@")
+                .build();
+        loginPagePB.typeLoginForm(userLombok);
         loginPagePB.closeAlert();
-        Assert.assertTrue(loginPagePB.isErrorMassagePresent("Login Failed with code 401"));
+        Assert.assertTrue(loginPagePB.isErrorMessageLogIn401());
+    }
+
+    @Test
+    public void loginNegativeTest_EmptyEmail() {
+        UserLombok userLombok = UserLombok.builder()
+                .username ("")
+                .password("Sh12345!@")
+                .build();
+        loginPagePB.typeLoginForm(userLombok);
+        loginPagePB.closeAlert();
+        Assert.assertTrue(loginPagePB.isErrorMessageLogIn401());
     }
 
     @Test
     public void loginPositiveTest() {
-        User user = new User ("sotiga2009@gmail.com", "Sh12345!@");
-        HomePage_PB homePagePB = new HomePage_PB((getDriver()));
-        homePagePB.clickBtnLoginHeader();
-        LoginPage_PB loginPagePB = new LoginPage_PB(getDriver());
-        loginPagePB.typeLoginForm(user);
+        UserLombok userLombok = UserLombok.builder()
+                .username ("sotiga2015@gmail.com")
+                .password("Sh12345!@")
+                .build();
+        loginPagePB.typeLoginForm(userLombok);
     }
 }

@@ -1,6 +1,6 @@
 package pages;
 
-import dto.User;
+import dto.UserLombok;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,10 +34,22 @@ public class LoginPage_PB extends BasePage_PB {
     @FindBy(xpath = "//div[@class='login_login__3EHKB']/div")
     WebElement errorMassageLoginRegistration;
 
+    @FindBy(className = "contact-page_message__2qafk")
+    WebElement messageNoContacts;
 
-    public void typeLoginForm (User user){
-        inputEmail.sendKeys(user.getUsername());
-        inputPassword.sendKeys(user.getPassword());
+    @FindBy(xpath = "//button[text()='Sign Out']")
+    WebElement btnSignOutHeader;
+
+    @FindBy(xpath = "//div[text()='Login Failed with code 401']")
+    WebElement messageErrorLogIn401;
+
+    public void logOut(){
+        btnSignOutHeader.click();
+    }
+
+    public void typeLoginForm (UserLombok userLombok){
+        inputEmail.sendKeys(userLombok.getUsername());
+        inputPassword.sendKeys(userLombok.getPassword());
         btnLoginBody.click();
 //    public void typeLoginForm(String email, String password){
 //        inputEmail.sendKeys(email);
@@ -45,9 +57,9 @@ public class LoginPage_PB extends BasePage_PB {
 //        btnLoginBody.click();
     }
 
-    public void typeRegistrationForm (User user){
-        inputEmail.sendKeys(user.getUsername());
-        inputPassword.sendKeys(user.getPassword());
+    public void typeRegistrationForm (UserLombok userLombok){
+        inputEmail.sendKeys(userLombok.getUsername());
+        inputPassword.sendKeys(userLombok.getPassword());
         btnRegistrationBody.click();
     }
 
@@ -58,7 +70,23 @@ public class LoginPage_PB extends BasePage_PB {
         alert.accept();
     }
 
-    public boolean isErrorMassagePresent(String message){
+    public String closeAlertReturnText(){
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
+                until(ExpectedConditions.alertIsPresent());
+        String text = alert.getText();
+        alert.accept();
+        return text;
+    }
+
+    public boolean isErrorMessagePresent(String message){
         return isTextInElementPresent(errorMassageLoginRegistration, message);
+    }
+
+    public boolean isNoContactMessagePresent(String message){
+        return isTextInElementPresent(messageNoContacts, message);
+    }
+
+    public boolean isErrorMessageLogIn401(){
+        return isElementPresent(messageErrorLogIn401);
     }
 }
