@@ -31,9 +31,6 @@ public class LoginPage_PB extends BasePage_PB {
     @FindBy(xpath = "//button[text()='Registration']")
     WebElement btnRegistrationBody;
 
-    @FindBy(xpath = "//div[@class='login_login__3EHKB']/div")
-    WebElement errorMassageLoginRegistration;
-
     @FindBy(className = "contact-page_message__2qafk")
     WebElement messageNoContacts;
 
@@ -76,10 +73,6 @@ public class LoginPage_PB extends BasePage_PB {
         String text = alert.getText();
         alert.accept();
         return text;
-    }
-
-    public boolean isErrorMessagePresent(String message){
-        return isTextInElementPresent(errorMassageLoginRegistration, message);
     }
 
     public boolean isNoContactMessagePresent(String message){
