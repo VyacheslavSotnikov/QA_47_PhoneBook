@@ -38,8 +38,8 @@ public class RegistrationTests extends ApplicationManager_PB {
             loginPagePB.typeRegistrationForm(userLombok);
             Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("User already exist"));
         } else{
-            Assert.fail("Wrong registration with user " + userLombok.toString());
-        };
+            Assert.fail("Wrong registration with user " + userLombok);
+        }
     }
 
     @Test
@@ -50,8 +50,22 @@ public class RegistrationTests extends ApplicationManager_PB {
     }
 
     @Test
+    public void registrationNegativeTest_EmptyEmail() {
+        UserLombok userLombok = new UserLombok("", "Sh12345!@");
+        loginPagePB.typeRegistrationForm(userLombok);
+        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
+    }
+
+    @Test
     public void registrationNegativeTest_wrongPassword() {
         UserLombok userLombok = new UserLombok(generateEmail(10), "111");
+        loginPagePB.typeRegistrationForm(userLombok);
+        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
+    }
+
+    @Test
+    public void registrationNegativeTest_EmptyPassword() {
+        UserLombok userLombok = new UserLombok(generateEmail(10), "");
         loginPagePB.typeRegistrationForm(userLombok);
         Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
     }
