@@ -10,9 +10,6 @@ public class UserLombok {
     private String username;
     private String password;
 
-    public UserLombok() {;
-    }
-
     public UserLombok(String username, String password) {
         this.username = username;
         this.password = password;
