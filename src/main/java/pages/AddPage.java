@@ -1,14 +1,11 @@
 package pages;
-
 import dto.Contact;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import java.time.Duration;
 
@@ -39,28 +36,13 @@ public class AddPage extends BasePage_PB{
     @FindBy(xpath = "//div[@class='add_form__2rsm2']/button")
     WebElement btnSave;
 
-    public void typeAddPageForm (Contact contact){
+    public void typeNewContactForm (Contact contact){
         inputNameAddPage.sendKeys(contact.getName());
-        inputLastNameAddPage.sendKeys(contact.getLastname());
+        inputLastNameAddPage.sendKeys(contact.getLastName());
         inputPhoneAddPage.sendKeys(contact.getPhone());
         inputEmailAddPage.sendKeys(contact.getEmail());
         inputAddressAddPage.sendKeys(contact.getAddress());
         inputDescriptionAddPage.sendKeys(contact.getDescription());
         btnSave.click();
-    }
-
-    public void closeAlert(){
-        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
-                until(ExpectedConditions.alertIsPresent());
-        System.out.println(alert.getText());
-        alert.accept();
-    }
-
-    public String closeAlertReturnText(){
-        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
-                until(ExpectedConditions.alertIsPresent());
-        String text = alert.getText();
-        alert.accept();
-        return text;
     }
 }

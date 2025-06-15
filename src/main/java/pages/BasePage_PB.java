@@ -4,6 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.HeaderMenuItem;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 public abstract class BasePage_PB {
     static WebDriver driver;
@@ -21,8 +24,11 @@ public abstract class BasePage_PB {
     }
 
     public static <T extends  BasePage_PB> T clickButtonHeader(HeaderMenuItem headerMenuItem){
-        pause(3);
-        WebElement element = driver.findElement(By.xpath(headerMenuItem.getLocator()));
+//        pause(3);
+//        WebElement element = driver.findElement(By.xpath(headerMenuItem.getLocator()));
+        //element.click();
+        WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath(headerMenuItem.getLocator())));
         element.click();
         switch ((headerMenuItem)){
             case LOGIN -> {return(T) new LoginPage_PB(driver);}
@@ -36,7 +42,6 @@ public abstract class BasePage_PB {
     }
 
     public boolean isElementPresent(WebElement element){
-
         return element.isDisplayed();
     }
 
