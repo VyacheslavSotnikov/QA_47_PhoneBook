@@ -47,8 +47,107 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .build();
         addPage.typeNewContactForm(contact);
         int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        System.out.println(sizeBeforeAdd + "X" + sizeAfterAdd);
         Assert.assertEquals(sizeBeforeAdd +1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_EmptyName(){
+        Contact contact = Contact.builder()
+                .name("")
+                .lastName(generateString(10))
+                .phone("05" + generatePhone(8))
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        String nameFieldValue = addPage.getInputValueByPlaceholder("Name");
+        Assert.assertEquals(nameFieldValue, "", "Input Name without value");
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_EmptyLastName(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName("")
+                .phone("05" + generatePhone(8))
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        String nameFieldValue = addPage.getInputValueByPlaceholder("Last Name");
+        Assert.assertEquals(nameFieldValue, "", "Input Last Name without value");
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_EmptyPhone(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("")
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        addPage.closeAlert();
+        String nameFieldValue = addPage.getInputValueByPlaceholder("Phone");
+        Assert.assertEquals(nameFieldValue, "", "Input Phone without value");
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_EmptyAddress(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("05"+generatePhone(9))
+                .email(generateEmail(10))
+                .address("")
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        String nameFieldValue = addPage.getInputValueByPlaceholder("Address");
+        Assert.assertEquals(nameFieldValue, "", "Input Address without value");
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_InvalidPhone(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("05"+generatePhone(3))
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        addPage.closeAlert();
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+    @Test
+    public void addNewContactNegativeTest_InvalidEmail(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("05"+generatePhone(9))
+                .email("sotiga2007mail.ru")
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        addPage.closeAlert();
+        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
 
     @Test
@@ -63,5 +162,23 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .build();
         addPage.typeNewContactForm(contact);
         Assert.assertTrue(contactsPage.validateContactNamePhone(contact.getName(), contact.getPhone()));
+    }
+
+    @Test
+    public void addNewContactPositiveTest_validateAll() {
+        Contact contact = Contact.builder()
+                .name("Name-"+generateString(8))
+                .lastName(generateString(10))
+                .phone(generatePhone(10))
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        Assert.assertTrue(contactsPage.validateContactNamePhone(contact.getName(), contact.getPhone()));
+        contactsPage.clickContactCardByName(contact.getName());
+        Assert.assertTrue(contactsPage.validateContactAll(contact.getName(), contact.getLastName(),
+                contact.getPhone(), contact.getEmail(), contact.getAddress(),
+                contact.getDescription()));
     }
 }

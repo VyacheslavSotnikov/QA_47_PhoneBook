@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,5 +48,12 @@ public abstract class BasePage_PB {
 
     public boolean isTextInElementPresent(WebElement element, String text){
         return element.getText().contains(text);
+    }
+
+    public void closeAlert(){
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
+                until(ExpectedConditions.alertIsPresent());
+        System.out.println(alert.getText());
+        alert.accept();
     }
 }
