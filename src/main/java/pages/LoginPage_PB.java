@@ -60,13 +60,6 @@ public class LoginPage_PB extends BasePage_PB {
         btnRegistrationBody.click();
     }
 
-    public void closeAlert(){
-        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
-                until(ExpectedConditions.alertIsPresent());
-        System.out.println(alert.getText());
-        alert.accept();
-    }
-
     public String closeAlertReturnText(){
         Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
                 until(ExpectedConditions.alertIsPresent());

@@ -6,7 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ContactsPage extends BasePage_PB {
@@ -21,6 +25,9 @@ public class ContactsPage extends BasePage_PB {
 
     @FindBy(xpath = "//div[@class='contact-item_card__2SOIM']")
     List<WebElement> contactsList;
+
+    @FindBy(xpath = "//div[@class='contact-page_rightdiv__1NgZC']")
+    List<WebElement> detailContactCard;
 
     public boolean isContactsPresent() {
         return isElementPresent(btnContactsHeader);
@@ -46,5 +53,28 @@ public class ContactsPage extends BasePage_PB {
                 return true;
         }
         return false;
+    }
+
+
+    public boolean validateContactAll(String name, String lastName, String phone, String email
+                                            , String address, String description) {
+        for (WebElement element : detailContactCard) {
+            if (element.getText().contains(name) && element.getText().contains(lastName)
+                    && element.getText().contains(phone) && element.getText().contains(email)
+                    && element.getText().contains(address)
+                    && element.getText().contains(description))
+                return true;
+        }
+        return false;
+    }
+
+    public void clickContactCardByName(String name) {
+        for (WebElement element : contactsList) {
+            String contactName = element.findElement(By.tagName("h2")).getText();
+            if (contactName.equals(name)) {
+                element.click();
+                return;
+            }
+        }
     }
 }
