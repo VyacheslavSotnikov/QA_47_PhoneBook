@@ -6,11 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.Test;
-
-import java.time.Duration;
 import java.util.List;
 
 public class ContactsPage extends BasePage_PB {
@@ -76,5 +71,14 @@ public class ContactsPage extends BasePage_PB {
                 return;
             }
         }
+    }
+
+    public String getPhoneFromList() {
+        if(!contactsList.isEmpty()) {
+            System.out.println(contactsList.get(0).getText().split("\n")[1]);
+            return contactsList.get(0).getText();
+        }
+        System.out.println("contact list is empty");
+        return null;
     }
 }

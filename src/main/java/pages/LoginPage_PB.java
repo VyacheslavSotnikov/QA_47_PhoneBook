@@ -45,8 +45,10 @@ public class LoginPage_PB extends BasePage_PB {
     }
 
     public void typeLoginForm (UserLombok userLombok){
+        logger.info("type login form with data " + userLombok.toString());
         inputEmail.sendKeys(userLombok.getUsername());
         inputPassword.sendKeys(userLombok.getPassword());
+        logger.info("click btn login " + btnLoginBody.getTagName());
         btnLoginBody.click();
 //    public void typeLoginForm(String email, String password){
 //        inputEmail.sendKeys(email);
@@ -58,14 +60,6 @@ public class LoginPage_PB extends BasePage_PB {
         inputEmail.sendKeys(userLombok.getUsername());
         inputPassword.sendKeys(userLombok.getPassword());
         btnRegistrationBody.click();
-    }
-
-    public String closeAlertReturnText(){
-        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
-                until(ExpectedConditions.alertIsPresent());
-        String text = alert.getText();
-        alert.accept();
-        return text;
     }
 
     public boolean isNoContactMessagePresent(String message){

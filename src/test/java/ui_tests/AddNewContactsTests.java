@@ -22,6 +22,7 @@ public class AddNewContactsTests extends ApplicationManager_PB {
     ContactsPage contactsPage;
     AddPage addPage;
     int sizeBeforeAdd;
+    String existPhone;
 
     @BeforeMethod
     public void goToAddPage(){
@@ -32,6 +33,7 @@ public class AddNewContactsTests extends ApplicationManager_PB {
         loginPagePb.typeLoginForm(user);
         contactsPage = new ContactsPage(getDriver());
         sizeBeforeAdd = contactsPage.getContactListSize();
+        existPhone = contactsPage.getPhoneFromList();
         addPage = clickButtonHeader(HeaderMenuItem.ADD);
     }
 
@@ -61,10 +63,11 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        String nameFieldValue = addPage.getInputValueByPlaceholder("Name");
-        Assert.assertEquals(nameFieldValue, "", "Input Name without value");
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+        Assert.assertTrue((addPage.validateURL("add")));
+//        String nameFieldValue = addPage.getInputValueByPlaceholder("Name");
+//        Assert.assertEquals(nameFieldValue, "", "Input Name without value");
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
 
     @Test
@@ -78,13 +81,15 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        String nameFieldValue = addPage.getInputValueByPlaceholder("Last Name");
-        Assert.assertEquals(nameFieldValue, "", "Input Last Name without value");
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+        Assert.assertTrue(addPage.isURLNotContains("contacts"));
+
+//        String nameFieldValue = addPage.getInputValueByPlaceholder("Last Name");
+//        Assert.assertEquals(nameFieldValue, "", "Input Last Name without value");
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
 
-    @Test
+    @Test (invocationCount = 1)
     public void addNewContactNegativeTest_EmptyPhone(){
         Contact contact = Contact.builder()
                 .name(generateString(8))
@@ -95,12 +100,35 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        addPage.closeAlert();
-        String nameFieldValue = addPage.getInputValueByPlaceholder("Phone");
-        Assert.assertEquals(nameFieldValue, "", "Input Phone without value");
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+       Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!"
+               , addPage.closeAlertReturnText());
+        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
+
+//        String nameFieldValue = addPage.getInputValueByPlaceholder("Phone");
+//        Assert.assertEquals(nameFieldValue, "", "Input Phone without value");
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
+
+    @Test (invocationCount = 1)
+    public void addNewContactNegativeTest_EmptyEmail(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("123456789")
+                .email("")
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        Assert.assertTrue(addPage.isURLNotContains("contacts"));
+
+//        String nameFieldValue = addPage.getInputValueByPlaceholder("Phone");
+//        Assert.assertEquals(nameFieldValue, "", "Input Phone without value");
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
 
     @Test
     public void addNewContactNegativeTest_EmptyAddress(){
@@ -113,10 +141,26 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        String nameFieldValue = addPage.getInputValueByPlaceholder("Address");
-        Assert.assertEquals(nameFieldValue, "", "Input Address without value");
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+        Assert.assertTrue(addPage.isURLNotContains("contacts"));
+
+//        String nameFieldValue = addPage.getInputValueByPlaceholder("Address");
+//        Assert.assertEquals(nameFieldValue, "", "Input Address without value");
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_ExistPhone(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone(existPhone)
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        Assert.assertTrue(addPage.isURLNotContains("contacts"));
     }
 
     @Test
@@ -130,10 +174,14 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        addPage.closeAlert();
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+        Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!"
+                , addPage.closeAlertReturnText());
+        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
+//        addPage.closeAlert();
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
+
     @Test
     public void addNewContactNegativeTest_InvalidEmail(){
         Contact contact = Contact.builder()
@@ -145,9 +193,10 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .description("desc " + generateString(15))
                 .build();
         addPage.typeNewContactForm(contact);
-        addPage.closeAlert();
-        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
-        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+        Assert.assertTrue(addPage.closeAlertReturnText().contains("Email not valid:"));
+//        addPage.closeAlert();
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
     }
 
     @Test
@@ -162,7 +211,7 @@ public class AddNewContactsTests extends ApplicationManager_PB {
                 .build();
         addPage.typeNewContactForm(contact);
         Assert.assertTrue(contactsPage.validateContactNamePhone(contact.getName(), contact.getPhone()));
-    }
+   }
 
     @Test
     public void addNewContactPositiveTest_validateAll() {

@@ -8,6 +8,8 @@ import org.testng.annotations.Test;
 import pages.HomePage_PB;
 import pages.LoginPage_PB;
 
+import java.lang.reflect.Method;
+
 public class LoginTests_PB extends ApplicationManager_PB {
 
     private LoginPage_PB loginPagePB;
@@ -64,11 +66,14 @@ public class LoginTests_PB extends ApplicationManager_PB {
     }
 
     @Test
-    public void loginPositiveTest() {
+    public void loginPositiveTest(Method method) {
+        logger.info("start method " + method.getName());
+
         UserLombok userLombok = UserLombok.builder()
                 .username ("sotiga2015@gmail.com")
                 .password("Sh12345!@")
                 .build();
+        logger.info("test data -->"+ userLombok.toString());
         loginPagePB.typeLoginForm(userLombok);
     }
 }

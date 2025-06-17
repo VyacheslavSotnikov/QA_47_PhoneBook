@@ -1,20 +1,21 @@
 package pages;
 
+import lombok.Setter;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.HeaderMenuItem;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public abstract class BasePage_PB {
+    @Setter
     static WebDriver driver;
-
-    public static void setDriver(WebDriver wd){
-        driver = wd;
-    }
+    Logger logger = LoggerFactory.getLogger(BasePage_PB.class);
 
     public static void pause(int time) {
         try {
@@ -55,5 +56,24 @@ public abstract class BasePage_PB {
                 until(ExpectedConditions.alertIsPresent());
         System.out.println(alert.getText());
         alert.accept();
+    }
+
+    public String closeAlertReturnText(){
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5)).
+                until(ExpectedConditions.alertIsPresent());
+        String text = alert.getText();
+        alert.accept();
+        return text;
+    }
+
+    public  boolean validateURL(String str) {
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+        .until(ExpectedConditions.urlContains(str));
+    }
+
+    public  boolean isURLNotContains(String str) {
+        pause(5);
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.not(ExpectedConditions.urlContains(str)));
     }
 }
