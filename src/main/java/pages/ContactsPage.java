@@ -6,12 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 import java.util.List;
-import java.util.Random;
 
 public class ContactsPage extends BasePage_PB {
 
@@ -28,12 +23,6 @@ public class ContactsPage extends BasePage_PB {
 
     @FindBy(xpath = "//div[@class='contact-page_rightdiv__1NgZC']")
     List<WebElement> detailContactCard;
-
-    @FindBy(xpath = "//button[text()='Edit']")
-    public WebElement btnEditContact;
-
-    @FindBy(xpath = "//div[@class='form_form__FOqHs']/button[text()='Save']")
-    public WebElement btnEditFormSave;
 
     public boolean isContactsPresent() {
         return isElementPresent(btnContactsHeader);
@@ -61,6 +50,7 @@ public class ContactsPage extends BasePage_PB {
         return false;
     }
 
+
     public boolean validateContactAll(String name, String lastName, String phone, String email
                                             , String address, String description) {
         for (WebElement element : detailContactCard) {
@@ -68,17 +58,6 @@ public class ContactsPage extends BasePage_PB {
                     && element.getText().contains(phone) && element.getText().contains(email)
                     && element.getText().contains(address)
                     && element.getText().contains(description))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean validateContactWithoutDesc(String name, String lastName, String phone, String email
-            , String address) {
-        for (WebElement element : detailContactCard) {
-            if (element.getText().contains(name) && element.getText().contains(lastName)
-                    && element.getText().contains(phone) && element.getText().contains(email)
-                    && element.getText().contains(address))
                 return true;
         }
         return false;
@@ -101,39 +80,5 @@ public class ContactsPage extends BasePage_PB {
         }
         System.out.println("contact list is empty");
         return null;
-    }
-
-    public void clickRandomContact() {
-        if (!contactsList.isEmpty()) {
-            Random random = new Random();
-            int index = random.nextInt(contactsList.size());
-            WebElement randomContact = contactsList.get(index);
-            System.out.println("Clicking on contact: " + randomContact.getText());
-            randomContact.click();
-        } else {
-            System.out.println("Contact list is empty. No contact to click.");
-        }
-    }
-
-    public void editInputByPlaceholder(String placeholder, String value) {
-        String xpath = String.format("//div[@class='form_form__FOqHs']//*[self::input or self::textarea][@placeholder='%s']", placeholder);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        input.clear();
-        input.sendKeys(value);
-    }
-
-    public void clickSaveButtonEditForm() {
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.elementToBeClickable(btnEditFormSave))
-                .click();
-    }
-
-    public void waitUntilContactUpdatedInDetails(String newName) {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[@class='contact-page_rightdiv__1NgZC']//h2[contains(text(),'" + newName + "')]")
-                )
-        );
     }
 }
