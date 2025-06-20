@@ -35,10 +35,6 @@ public class ContactsPage extends BasePage_PB {
     @FindBy(xpath = "//div[@class='form_form__FOqHs']/button[text()='Save']")
     public WebElement btnEditFormSave;
 
-    public boolean isContactsPresent() {
-        return isElementPresent(btnContactsHeader);
-    }
-
     public Integer getContactListSize() {
         System.out.println("contactsList.size()-->"+contactsList.size());
         return contactsList.size();
