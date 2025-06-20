@@ -27,8 +27,7 @@ public class EditRemoveTests extends ApplicationManager_PB {
         homePagePb = new HomePage_PB(getDriver());
         loginPagePb = clickButtonHeader(HeaderMenuItem.LOGIN);
         loginPagePb.typeLoginForm(user);
-        contactsPage = new ContactsPage(getDriver());
-        contactsPage.clickButtonHeader(HeaderMenuItem.CONTACTS);
+        contactsPage = clickButtonHeader(HeaderMenuItem.CONTACTS);
         contactsPage.clickRandomContact();
         contactsPage.btnEditContact.click();
 
@@ -42,7 +41,7 @@ public class EditRemoveTests extends ApplicationManager_PB {
         String phone = generatePhone(10);
         String email = generateEmail(5);
         String address = "City " + generateString(4);
-//      String description = "desc " + generateString(6);
+//      String description = "desc " + generateString(6); bag in input description
 
         contactsPage.editInputByPlaceholder("Name", name);
         contactsPage.editInputByPlaceholder("Last Name", lastName);
