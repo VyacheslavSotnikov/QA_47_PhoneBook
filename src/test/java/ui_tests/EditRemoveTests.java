@@ -51,6 +51,8 @@ public class EditRemoveTests extends ApplicationManager_PB {
         contactsPage.editInputByPlaceholder("Address", address);
 //      contactsPage.editInputByPlaceholder("desc", description);
 
+        contactsPage.clickSaveButtonEditForm();
+
         contactsPage.waitUntilContactUpdatedInDetails(name);
         contactsPage.clickContactCardByName(name);
 
