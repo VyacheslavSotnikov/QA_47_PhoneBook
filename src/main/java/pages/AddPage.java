@@ -50,8 +50,8 @@ public class AddPage extends BasePage_PB{
         btnSave.click();
     }
 
-    public String getInputValueByPlaceholder(String placeholder) {
-        WebElement input = driver.findElement(By.xpath("//input[@placeholder='" + placeholder + "']"));
-        return input.getAttribute("value");
-    }
+//    public String getInputValueByPlaceholder(String placeholder) {
+//        WebElement input = driver.findElement(By.xpath("//input[@placeholder='" + placeholder + "']"));
+//        return input.getAttribute("value");
+//    }
 }
