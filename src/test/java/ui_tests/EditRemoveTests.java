@@ -4,6 +4,7 @@ import dto.UserLombok;
 import manager.ApplicationManager_PB;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage_PB;
@@ -13,6 +14,8 @@ import utils.TestNGListener;
 
 import static pages.BasePage_PB.clickButtonHeader;
 import static utils.RandomUtils.*;
+
+@Listeners(TestNGListener.class)
 
 public class EditRemoveTests extends ApplicationManager_PB {
 

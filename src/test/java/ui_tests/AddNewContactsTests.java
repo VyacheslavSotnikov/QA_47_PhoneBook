@@ -5,6 +5,7 @@ import dto.UserLombok;
 import manager.ApplicationManager_PB;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.AddPage;
 import pages.ContactsPage;
@@ -15,6 +16,8 @@ import utils.TestNGListener;
 
 import static pages.BasePage_PB.*;
 import static utils.RandomUtils.*;
+
+@Listeners(TestNGListener.class)
 
 public class AddNewContactsTests extends ApplicationManager_PB {
 

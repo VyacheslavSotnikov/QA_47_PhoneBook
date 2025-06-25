@@ -4,12 +4,15 @@ import dto.UserLombok;
 import manager.ApplicationManager_PB;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.HomePage_PB;
 import pages.LoginPage_PB;
 import utils.TestNGListener;
 
 import java.lang.reflect.Method;
+
+@Listeners(TestNGListener.class)
 
 public class LoginTests_PB extends ApplicationManager_PB {
 
