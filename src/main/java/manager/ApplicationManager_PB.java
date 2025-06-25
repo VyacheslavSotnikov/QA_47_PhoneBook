@@ -33,10 +33,10 @@ public class ApplicationManager_PB {
         driver = new EventFiringDecorator<>(webDriverListener).decorate(driver);
     }
 
-    @AfterMethod
+    @AfterMethod(enabled = false)
     public void tearDown(){
-        logger.info("Stop test -----------");
-//        if(driver != null)
-//         driver.quit();
+        //logger.info("Stop test -----------");
+        if(driver != null)
+         driver.quit();
     }
 }

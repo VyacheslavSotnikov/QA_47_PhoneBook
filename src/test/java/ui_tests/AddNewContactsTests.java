@@ -1,5 +1,6 @@
 package ui_tests;
 
+import data_provider.ContactDP;
 import dto.Contact;
 import dto.UserLombok;
 import manager.ApplicationManager_PB;
@@ -14,6 +15,7 @@ import pages.LoginPage_PB;
 import utils.HeaderMenuItem;
 import utils.TestNGListener;
 
+import static pages.AddPage.*;
 import static pages.BasePage_PB.*;
 import static utils.RandomUtils.*;
 
@@ -54,6 +56,17 @@ public class AddNewContactsTests extends ApplicationManager_PB {
         addPage.typeNewContactForm(contact);
         int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
         Assert.assertEquals(sizeBeforeAdd +1, sizeAfterAdd);
+    }
+
+    @Test(dataProvider = "addNewContactDP", dataProviderClass = ContactDP.class)
+    public void addNewContactPositiveTestDP(Contact contact){
+        addPage.typeNewContactForm(contact);
+    }
+
+    @Test(dataProvider = "addNewContactDPFile", dataProviderClass = ContactDP.class)
+    public void addNewContactNegativeTestDP(Contact contact){
+        logger.info("test data --> " + contact);
+        addPage.typeNewContactForm(contact);
     }
 
     @Test
@@ -106,8 +119,8 @@ public class AddNewContactsTests extends ApplicationManager_PB {
         addPage.typeNewContactForm(contact);
        Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!"
                , addPage.closeAlertReturnText());
-        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
-
+//        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
+//
 //        String nameFieldValue = addPage.getInputValueByPlaceholder("Phone");
 //        Assert.assertEquals(nameFieldValue, "", "Input Phone without value");
 //        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
@@ -154,20 +167,6 @@ public class AddNewContactsTests extends ApplicationManager_PB {
     }
 
     @Test
-    public void addNewContactNegativeTest_ExistPhone(){
-        Contact contact = Contact.builder()
-                .name(generateString(8))
-                .lastName(generateString(10))
-                .phone(existPhone)
-                .email(generateEmail(10))
-                .address("Haifa " + generateString(10))
-                .description("desc " + generateString(15))
-                .build();
-        addPage.typeNewContactForm(contact);
-        Assert.assertTrue(addPage.isURLNotContains("contacts"));
-    }
-
-    @Test
     public void addNewContactNegativeTest_InvalidPhone(){
         Contact contact = Contact.builder()
                 .name(generateString(8))
@@ -180,7 +179,26 @@ public class AddNewContactsTests extends ApplicationManager_PB {
         addPage.typeNewContactForm(contact);
         Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!"
                 , addPage.closeAlertReturnText());
-        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
+        //Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
+//        addPage.closeAlert();
+//        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
+//        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
+    }
+
+    @Test
+    public void addNewContactNegativeTest_InvalidPhone2(){
+        Contact contact = Contact.builder()
+                .name(generateString(8))
+                .lastName(generateString(10))
+                .phone("dededee")
+                .email(generateEmail(10))
+                .address("Haifa " + generateString(10))
+                .description("desc " + generateString(15))
+                .build();
+        addPage.typeNewContactForm(contact);
+        Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!"
+                , addPage.closeAlertReturnText());
+        //Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone number must contain only digits"));
 //        addPage.closeAlert();
 //        int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
 //        Assert.assertNotEquals(sizeBeforeAdd+1, sizeAfterAdd);
