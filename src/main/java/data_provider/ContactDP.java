@@ -17,7 +17,7 @@ public class ContactDP {
 
     @DataProvider
     public  Contact[] addNewContactDP(){
-        Contact contact1 = Contact.builder()
+        Contact contact = Contact.builder()
                 .name(generateString(5))
                 .lastName(generateString(10))
                 .phone("05" + generatePhone(8))
@@ -25,7 +25,7 @@ public class ContactDP {
                 .address("Haifa " + generateString(10))
                 .description("desc " + generateString(15))
                 .build();
-        return new Contact[]{contact1};
+        return new Contact[]{contact};
     }
 
     @DataProvider

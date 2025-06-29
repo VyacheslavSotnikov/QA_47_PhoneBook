@@ -18,6 +18,7 @@ import utils.TestNGListener;
 import static pages.AddPage.*;
 import static pages.BasePage_PB.*;
 import static utils.RandomUtils.*;
+import static utils.PropertiesReader.getProperty;
 
 @Listeners(TestNGListener.class)
 
@@ -32,8 +33,10 @@ public class AddNewContactsTests extends ApplicationManager_PB {
 
     @BeforeMethod
     public void goToAddPage(){
-        UserLombok user = new UserLombok("sotiga2007@mail.ru", "Sh12345!@");
-
+        UserLombok user = UserLombok.builder()
+                .username(getProperty("login.properties", "email"))
+                .password(getProperty("login.properties", "password"))
+                .build();
         homePagePb = new HomePage_PB(getDriver());
         loginPagePb = clickButtonHeader(HeaderMenuItem.LOGIN);
         loginPagePb.typeLoginForm(user);

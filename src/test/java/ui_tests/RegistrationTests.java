@@ -8,6 +8,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.HomePage_PB;
 import pages.LoginPage_PB;
+import utils.RetryAnalyzer;
 import utils.TestNGListener;
 
 import  static  utils.RandomUtils.*;
@@ -26,7 +27,7 @@ public class RegistrationTests extends ApplicationManager_PB {
         loginPagePB = new LoginPage_PB(getDriver());
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void registrationPositiveTest() {
         UserLombok userLombok = new UserLombok(generateEmail(10), "Password123!");
         loginPagePB.typeRegistrationForm(userLombok);

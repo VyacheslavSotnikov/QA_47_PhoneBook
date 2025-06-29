@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.ContactsPage;
 import pages.HomePage_PB;
 import pages.LoginPage_PB;
 import utils.TestNGListener;
