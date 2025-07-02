@@ -1,77 +1,56 @@
+
 package ui_tests;
 
-import dto.UserLombok;
-import manager.ApplicationManager_PB;
+import dto.User;
+import manager.ApplicationManager;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.HomePage_PB;
-import pages.LoginPage_PB;
+import pages.HomePage;
+import pages.LoginPage;
 import utils.RetryAnalyzer;
 import utils.TestNGListener;
 
-import  static  utils.RandomUtils.*;
-
+import static utils.RandomUtils.*;
 @Listeners(TestNGListener.class)
-
-public class RegistrationTests extends ApplicationManager_PB {
-
-    HomePage_PB homePagePB;
-    LoginPage_PB loginPagePB;
-
+public class RegistrationTests extends ApplicationManager {
+    HomePage homePage;
+    LoginPage loginPage;
     @BeforeMethod
     public void goToRegistrationPage(){
-        homePagePB = new HomePage_PB((getDriver()));
-        homePagePB.clickBtnLoginHeader();
-        loginPagePB = new LoginPage_PB(getDriver());
+        homePage = new HomePage(getDriver());
+        homePage.clickBtnLoginHeader();
+        loginPage = new LoginPage(getDriver());
     }
+    //      BeforeMethod(App)   BeforeMethod(Reg)  Test  AfterMethod(App)
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
-    public void registrationPositiveTest() {
-        UserLombok userLombok = new UserLombok(generateEmail(10), "Password123!");
-        loginPagePB.typeRegistrationForm(userLombok);
-        Assert.assertTrue(loginPagePB.isNoContactMessagePresent("Add new by clicking on Add in NavBar!"));
+    public void registrationPositiveTest(){
+        User user = new User(generateEmail(10), "Password123!");
+        loginPage.typeRegistrationForm(user);
+        Assert.assertTrue(loginPage.isNoContactMessagePresent("Add new by clicking on Add in NavBar!"));
     }
 
     @Test
-    public void registrationPositiveTest_dublicateUser() {
-        UserLombok userLombok = new UserLombok(generateEmail(10), "Password123!");
-        loginPagePB.typeRegistrationForm(userLombok);
-        if(loginPagePB.isNoContactMessagePresent("Add new by clicking on Add in NavBar!")){
-            loginPagePB.logOut();
-            loginPagePB.typeRegistrationForm(userLombok);
-            Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("User already exist"));
-        } else{
-            Assert.fail("Wrong registration with user " + userLombok);
+    public void registrationNegativeTest_duplicateUser(){
+        User user = new User(generateEmail(10), "Password123!");
+        loginPage.typeRegistrationForm(user);
+        if(loginPage.isNoContactMessagePresent("Add new by clicking on Add in NavBar!")){
+            loginPage.logOut();
+            loginPage.typeRegistrationForm(user);
+            Assert.assertTrue(loginPage.closeAlertReturnText()
+                    .contains("User already exist"));
+        }else {
+            Assert.fail("wrong registration with user " + user.toString());
         }
     }
 
     @Test
-    public void registrationNegativeTest_wrongEmail() {
-        UserLombok userLombok = new UserLombok("sotiga2020gmail.com", "Password123!");
-        loginPagePB.typeRegistrationForm(userLombok);
-        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
-    }
-
-    @Test
-    public void registrationNegativeTest_EmptyEmail() {
-        UserLombok userLombok = new UserLombok("", "Sh12345!@");
-        loginPagePB.typeRegistrationForm(userLombok);
-        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
-    }
-
-    @Test
-    public void registrationNegativeTest_wrongPassword() {
-        UserLombok userLombok = new UserLombok(generateEmail(10), "111");
-        loginPagePB.typeRegistrationForm(userLombok);
-        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
-    }
-
-    @Test
-    public void registrationNegativeTest_EmptyPassword() {
-        UserLombok userLombok = new UserLombok(generateEmail(10), "");
-        loginPagePB.typeRegistrationForm(userLombok);
-        Assert.assertTrue(loginPagePB.closeAlertReturnText().contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
+    public void registrationNegativeTest_wrongPassword(){
+        User user = new User(generateEmail(10), "Password123");
+        loginPage.typeRegistrationForm(user);
+        Assert.assertTrue(loginPage.closeAlertReturnText()
+                .contains("Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!"));
     }
 }

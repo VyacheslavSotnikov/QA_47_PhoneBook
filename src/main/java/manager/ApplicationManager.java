@@ -11,21 +11,19 @@ import org.testng.annotations.BeforeMethod;
 import utils.WDListener;
 
 import java.time.Duration;
-import java.time.LocalDate;
 
-public class ApplicationManager_PB {
-
+public class ApplicationManager {
     private WebDriver driver;
 
-    public WebDriver getDriver() {
+    public WebDriver getDriver(){
         return driver;
     }
 
-    public Logger logger = LoggerFactory.getLogger(ApplicationManager_PB.class);
+    public Logger logger = LoggerFactory.getLogger(ApplicationManager.class);
 
     @BeforeMethod
     public void setup(){
-        //logger.info("Start test " + LocalDate.now());
+        // logger.info("Start test --> "+ LocalDate.now());
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
@@ -35,8 +33,8 @@ public class ApplicationManager_PB {
 
     @AfterMethod(enabled = false)
     public void tearDown(){
-        //logger.info("Stop test -----------");
-        if(driver != null)
-         driver.quit();
+        // logger.info("Stop test -----------");
+        if (driver != null)
+            driver.quit();
     }
 }

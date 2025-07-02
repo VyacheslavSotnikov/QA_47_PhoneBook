@@ -1,7 +1,7 @@
 package pages;
+
 import dto.Contact;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,48 +10,46 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 import java.time.Duration;
 
-public class AddPage extends BasePage_PB{
-    public AddPage(WebDriver driver){
+public class AddPage extends BasePage {
+    public AddPage(WebDriver driver) {
         setDriver(driver);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), this);
     }
 
     @FindBy(xpath = "//input[@placeholder='Name']")
-    WebElement inputNameAddPage;
-
+    WebElement inputName;
     @FindBy(xpath = "//input[@placeholder='Last Name']")
-    WebElement inputLastNameAddPage;
-
+    WebElement inputLastName;
     @FindBy(xpath = "//input[@placeholder='Phone']")
-    WebElement inputPhoneAddPage;
-
+    WebElement inputPhone;
     @FindBy(xpath = "//input[@placeholder='email']")
-    WebElement inputEmailAddPage;
-
+    WebElement inputEmail;
     @FindBy(xpath = "//input[@placeholder='Address']")
-    WebElement inputAddressAddPage;
-
+    WebElement inputAddress;
     @FindBy(xpath = "//input[@placeholder='description']")
-    WebElement inputDescriptionAddPage;
-
-    @FindBy(xpath = "//div[@class='add_form__2rsm2']/button")
+    WebElement inputDescription;
+    @FindBy(xpath = "//b/..")
     WebElement btnSave;
 
-    public void typeNewContactForm (Contact contact){
-        inputNameAddPage.sendKeys(contact.getName());
-        inputLastNameAddPage.sendKeys(contact.getLastName());
-        inputPhoneAddPage.sendKeys(contact.getPhone());
-        inputEmailAddPage.sendKeys(contact.getEmail());
-        inputAddressAddPage.sendKeys(contact.getAddress());
-        inputDescriptionAddPage.sendKeys(contact.getDescription());
+    public void typeAddNewContactForm(Contact contact){
+        inputName.sendKeys(contact.getName());
+        inputLastName.sendKeys(contact.getLastName());
+        inputPhone.sendKeys(contact.getPhone());
+        inputEmail.sendKeys(contact.getEmail());
+        inputAddress.sendKeys(contact.getAddress());
+        inputDescription.sendKeys(contact.getDescription());
         btnSave.click();
     }
 
-//    public String getInputValueByPlaceholder(String placeholder) {
-//        WebElement input = driver.findElement(By.xpath("//input[@placeholder='" + placeholder + "']"));
-//        return input.getAttribute("value");
-//    }
+    public String closeAlertReturnText(){
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.alertIsPresent());
+        String text = alert.getText();
+        alert.accept();
+        return text;
+    }
+//
+
 }

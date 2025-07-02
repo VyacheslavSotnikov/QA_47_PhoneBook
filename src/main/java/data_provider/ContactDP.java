@@ -1,38 +1,23 @@
-package data_provider;
+package data_providers;
 
 import dto.Contact;
 import org.testng.annotations.DataProvider;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static utils.RandomUtils.*;
-import static utils.RandomUtils.generateString;
-
 public class ContactDP {
 
     @DataProvider
-    public  Contact[] addNewContactDP(){
-        Contact contact = Contact.builder()
-                .name(generateString(5))
-                .lastName(generateString(10))
-                .phone("05" + generatePhone(8))
-                .email(generateEmail(10))
-                .address("Haifa " + generateString(10))
-                .description("desc " + generateString(15))
-                .build();
-        return new Contact[]{contact};
-    }
-
-    @DataProvider
-    public Iterator <Contact> addNewContactDPFile(){
+    public Iterator<Contact> dataProviderContactsFile() {
         List<Contact> list = new ArrayList<>();
-        try(BufferedReader bufferedReader = new BufferedReader(
-                new FileReader("src/main/resources/DataProvider/contactFile.csv"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(
+                new FileReader("src/main/resources/data_provider/contacts.csv"))) {
             String line = bufferedReader.readLine();
             while (line != null) {
                 String[] splitArray = line.split(",");
@@ -46,8 +31,8 @@ public class ContactDP {
                         .build());
                 line = bufferedReader.readLine();
             }
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return list.listIterator();
     }

@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 
 public class WDListener implements WebDriverListener {
+    Logger logger = LoggerFactory.getLogger(WDListener.class);
 
-Logger logger = LoggerFactory.getLogger(WDListener.class);
     @Override
     public void afterGet(WebDriver driver, String url) {
         WebDriverListener.super.afterGet(driver, url);
@@ -35,4 +35,6 @@ Logger logger = LoggerFactory.getLogger(WDListener.class);
         WebDriverListener.super.afterSendKeys(element, keysToSend);
         logger.info("use sendKeys " + element.getTagName() + " --> " + Arrays.toString(keysToSend));
     }
+
+
 }
