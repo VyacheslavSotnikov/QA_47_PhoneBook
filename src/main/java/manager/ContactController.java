@@ -1,12 +1,19 @@
 package manager;
 
+import dto.Contact;
+import dto.TokenDto;
 import dto.User;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.testng.annotations.BeforeSuite;
+import utils.BaseAPI;
+
+import java.util.Random;
 
 import static io.restassured.RestAssured.given;
+import static utils.PropertiesReader.getProperty;
 
-public class ContactController {
+public class ContactController implements BaseAPI {
     /*   given()
             .header("Authorisation", "value")
             .body(user)
@@ -16,7 +23,57 @@ public class ContactController {
 
        Request
        Response
-     */
+   */
 
+    protected TokenDto tokenDto;
+    @BeforeSuite
+    public void login(){
+        User user = new User(getProperty("login.properties", "email"),
+                getProperty("login.properties", "password"));
+        Response response = new AuthenticationController().requestRegLogin(user, LOGIN_URL);
+        //System.out.println(response.getStatusLine());
+        if(response.getStatusCode() == 200){
+            tokenDto = response.body().as(TokenDto.class);
+        } else {
+            System.out.println("Smth sent wront --->" + response.getStatusCode());
+        }
+    }
 
+    protected Response addNewContactRequest(Contact contact, TokenDto tokenDto){
+        return given()
+                .body(contact)
+                .baseUri(getProperty("login.properties", "baseUri"))
+                .contentType(ContentType.JSON)   // Content-type : App/json
+                .accept(ContentType.JSON)
+                .header("Authorization", tokenDto.getToken())
+                .post(ADD_NEW_CONTACT_URL)
+                .thenReturn()
+                ;
+    }
+
+    public Response getAllUserContacts(){
+        return  given()
+                .baseUri(getProperty("login.properties", "baseUri"))
+                .accept(ContentType.JSON)
+                .header("Authorization", tokenDto.getToken())
+                .get(ADD_NEW_CONTACT_URL)
+                .thenReturn();
+    }
+
+    protected Response updateContactRequest(Contact contact, TokenDto tokenDto){
+        return given()
+                .body(contact)
+                .baseUri(getProperty("login.properties", "baseUri"))
+                .contentType(ContentType.JSON)   // Content-type : App/json
+                .accept(ContentType.JSON)
+                .header("Authorization", tokenDto.getToken())
+                .put(UPDATE_CONTACT_URL)
+                .thenReturn()
+                ;
+    }
+
+    protected Contact getRandomContact(Contact[] contacts) {
+        int index = new Random().nextInt(contacts.length);
+        return contacts[index];
+    }
 }

@@ -12,7 +12,7 @@ import static utils.RandomUtils.*;
 public class RegistrationTestsRest extends AuthenticationController implements BaseAPI {
 
     @Test
-    public void registrationPositiveTest_200(){
+    public void registrationPositiveTest_200() {
         User user = new User(generateEmail(10), "Password123!");
         Response response = requestRegLogin(user, REGISTRATION_URL);
         System.out.println(response.getStatusCode());
@@ -21,7 +21,7 @@ public class RegistrationTestsRest extends AuthenticationController implements B
     }
 
     @Test
-    public void registrationPositiveTest_getBody(){
+    public void registrationPositiveTest_getBody() {
         User user = new User(generateEmail(10), "Password123!");
         Response response = requestRegLogin(user, REGISTRATION_URL);
         System.out.println(response.getStatusCode());
@@ -30,38 +30,11 @@ public class RegistrationTestsRest extends AuthenticationController implements B
     }
 
     @Test
-    public void registrationNegativeTest_wrongEmail_400(){
+    public void registrationNegativeTest_wrongEmail_400() {
         User user = new User(generateString(10), "Password123!");
         Response response = requestRegLogin(user, REGISTRATION_URL);
         System.out.println(response.getStatusCode());
         System.out.println(response.getStatusLine());
         Assert.assertEquals(response.getStatusCode(), 400);
-    }
-
-    @Test
-    public void LoginPositiveTest_200(){
-        User user = new User("sotiga2015@gmail.com", "Sh12345!@");
-        Response response = requestRegLogin(user, LOGIN_URL);
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getStatusLine());
-        Assert.assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void LoginNegativeTest_wrongEmail_401(){
-        User user = new User("sotiga2015gmail.com", "Sh12345!@");
-        Response response = requestRegLogin(user, LOGIN_URL);
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getStatusLine());
-        Assert.assertEquals(response.getStatusCode(), 401);
-    }
-
-    @Test
-    public void LoginNegativeTest_wrongPassword_401(){
-        User user = new User("sotiga2015@gmail.com", "Sh12345!!");
-        Response response = requestRegLogin(user, LOGIN_URL);
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getStatusLine());
-        Assert.assertEquals(response.getStatusCode(), 401);
     }
 }

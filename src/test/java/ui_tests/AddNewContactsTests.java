@@ -1,7 +1,5 @@
-
 package ui_tests;
 
-import data_providers.ContactDP;
 import dto.Contact;
 import dto.User;
 import manager.ApplicationManager;
@@ -59,7 +57,7 @@ public class AddNewContactsTests extends ApplicationManager {
         Assert.assertEquals(sizeBeforeAdd +1, sizeAfterAdd);
     }
 
-    @Test(dataProvider = "dataProviderContactsFile", dataProviderClass = ContactDP.class)
+    @Test(dataProvider = "dataProviderContactsFile", dataProviderClass = data_providers.ContactDP.class)
     public void addNewContactPositiveTestDP(Contact contact) {
         addPage.typeAddNewContactForm(contact);
         int sizeAfterAdd = contactsPage.getContactsListSize();
