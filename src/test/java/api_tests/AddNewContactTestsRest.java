@@ -17,7 +17,7 @@ public class AddNewContactTestsRest extends ContactController {
 
 SoftAssert softAssert = new SoftAssert();
 
-    @Test
+    @Test(groups = "smoke")
     public void addNewContactPositiveTest(){
         Contact contact = Contact.builder()
                 .name(generateString(5))

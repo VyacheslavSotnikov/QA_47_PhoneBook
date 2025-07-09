@@ -35,3 +35,15 @@ java {
 test {
     useTestNG()
 }
+
+task smoke_tests(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/smoke-tests.xml'
+    }
+}
+
+task smoke_tests_api(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/smoke-tests_api.xml'
+    }
+}

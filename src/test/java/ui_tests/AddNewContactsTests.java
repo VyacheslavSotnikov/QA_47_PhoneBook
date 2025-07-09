@@ -27,7 +27,7 @@ public class AddNewContactsTests extends ApplicationManager {
     int sizeBeforeAdd;
     String existPhone;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         //User user = new User("qa_mail@mail.com", "Qwerty123!");
         User user = new User(getProperty("login.properties", "email"),
@@ -41,7 +41,7 @@ public class AddNewContactsTests extends ApplicationManager {
         addPage = clickButtonHeader(HeaderMenuItem.ADD);
     }
 
-    @Test(invocationCount = 1)
+    @Test(invocationCount = 1, groups = "smoke")
     public void addNewContactPositiveTest() {
         Contact contact = Contact.builder()
                 .name(generateString(5))

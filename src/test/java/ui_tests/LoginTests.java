@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 @Listeners(TestNGListener.class)
 public class LoginTests extends ApplicationManager {
 
-    @Test
+    @Test(groups = "smoke")
     public void loginPositiveTest(Method method) {
         logger.info("start method " + method.getName());
         User user = new User("qa_mail@mail.com", "Qwerty123!");

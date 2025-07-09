@@ -16,7 +16,7 @@ public class DeleteContactByIdTestsRest extends ContactController {
 
     Contact contact;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void createContact(){
         contact = Contact.builder()
                 .name(generateString(5))
@@ -35,7 +35,7 @@ public class DeleteContactByIdTestsRest extends ContactController {
         contact.setId(responseMessageDto.getMessage().split("ID: ")[1]);
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void deleteContactByIdPositiveTest(){
         Response response = deleteContactById(contact, tokenDto);
         response
