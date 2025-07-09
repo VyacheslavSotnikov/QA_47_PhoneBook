@@ -2,6 +2,7 @@ package api_tests;
 
 import dto.Contact;
 import dto.ContactsDto;
+import dto.User;
 import io.restassured.response.Response;
 import manager.ContactController;
 import org.testng.Assert;

@@ -14,16 +14,6 @@ import static io.restassured.RestAssured.given;
 import static utils.PropertiesReader.getProperty;
 
 public class ContactController implements BaseAPI {
-    /*   given()
-            .header("Authorisation", "value")
-            .body(user)
-         .when()
-            .post(url)
-         .then()    thenReturn()  --> response
-
-       Request
-       Response
-   */
 
     protected TokenDto tokenDto;
     @BeforeSuite
@@ -52,7 +42,7 @@ public class ContactController implements BaseAPI {
     }
 
     public Response getAllUserContacts(){
-        return  given()
+        return given()
                 .baseUri(getProperty("login.properties", "baseUri"))
                 .accept(ContentType.JSON)
                 .header("Authorization", tokenDto.getToken())
@@ -62,18 +52,27 @@ public class ContactController implements BaseAPI {
 
     protected Response updateContactRequest(Contact contact, TokenDto tokenDto){
         return given()
+                .log().all()
                 .body(contact)
                 .baseUri(getProperty("login.properties", "baseUri"))
-                .contentType(ContentType.JSON)   // Content-type : App/json
+                .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .header("Authorization", tokenDto.getToken())
-                .put(UPDATE_CONTACT_URL)
+                .put(ADD_NEW_CONTACT_URL)
                 .thenReturn()
                 ;
     }
 
-    protected Contact getRandomContact(Contact[] contacts) {
-        int index = new Random().nextInt(contacts.length);
-        return contacts[index];
+    protected Response deleteContactById(Contact contact, TokenDto tokenDto){
+        return given()
+                .log().all()
+                .baseUri(getProperty("login.properties", "baseUri"))
+                .accept(ContentType.JSON)
+                .header("Authorization", tokenDto.getToken())
+                .delete(ADD_NEW_CONTACT_URL+"/"+contact.getId())
+                .thenReturn();
     }
+
+
+
 }

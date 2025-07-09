@@ -1,16 +1,18 @@
 package api_tests;
 
-import dto.*;
+import dto.Contact;
+import dto.ResponseMessageDto;
+import dto.TokenDto;
 import io.restassured.response.Response;
 import manager.ContactController;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+
 import static utils.RandomUtils.generateEmail;
 import static utils.RandomUtils.generateString;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
-public class UpdateContactTestsRest extends ContactController {
+public class DeleteContactByIdTestsRest extends ContactController {
 
     Contact contact;
 
@@ -30,23 +32,29 @@ public class UpdateContactTestsRest extends ContactController {
             System.out.println("Contact doesn't created");
         } else
             responseMessageDto = response.body().as(ResponseMessageDto.class);
-        //Contact was added! ID: 1ebfbba2-b59f-45c9-8540-d2b0c07f1649)
         contact.setId(responseMessageDto.getMessage().split("ID: ")[1]);
     }
 
     @Test
-    public void  updateContactPositiveTest(){
-        System.out.println(contact.toString());
-        contact.setName("New_name");
-        Response response = updateContactRequest(contact, tokenDto);
-        System.out.println(response.getStatusLine());
+    public void deleteContactByIdPositiveTest(){
+        Response response = deleteContactById(contact, tokenDto);
         response
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("ResponseMessageDtoSchema.json"))
                 ;
-        ResponseMessageDto responseMessageDto = response.body().as(ResponseMessageDto.class);
-        Assert.assertTrue(responseMessageDto.getMessage().contains("Contact was updated"));
+    }
+
+    @Test
+    public void deleteContactByIdNegativeTest_401_InvalidToken(){
+        TokenDto tokenDto1 = TokenDto.builder().token("invalid").build();
+        Response response = deleteContactById(contact, tokenDto1);
+        response
+                .then()
+                .log().all()
+                .statusCode(401)
+                .body(matchesJsonSchemaInClasspath("ErrorMessageDtoSchema.json"))
+        ;
     }
 }
