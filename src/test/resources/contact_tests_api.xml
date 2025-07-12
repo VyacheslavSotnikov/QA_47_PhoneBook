@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="suite1" verbose="1">
+    <test name="contact_tests">
+        <classes>
+            <class name="api_tests.AddNewContactTestsRest"/>
+            <class name="api_tests.DeleteContactByIdTestsRest"/>
+            <class name="api_tests.GetUserContactsTests"/>
+            <class name="api_tests.UpdateContactTestsRest"/>
+        </classes>
+    </test>
+</suite>

@@ -50,6 +50,14 @@ public class ContactController implements BaseAPI {
                 .thenReturn();
     }
 
+    public Response getAllUserContactsNoAuth() {
+        return given()
+                .baseUri(getProperty("login.properties", "baseUri"))
+                .accept(ContentType.JSON)
+                .get(ADD_NEW_CONTACT_URL)  // например, "/v1/contacts"
+                .thenReturn();
+    }
+
     protected Response updateContactRequest(Contact contact, TokenDto tokenDto){
         return given()
                 .log().all()
@@ -62,6 +70,15 @@ public class ContactController implements BaseAPI {
                 .thenReturn()
                 ;
     }
+    public Response updateContactRequestNoAuth(Contact contact) {
+        return given()
+                .baseUri(BASE_URL)
+                .contentType("application/json")
+                .body(contact)
+                .when()
+                .put("/v1/contacts")
+                .andReturn();
+    }
 
     protected Response deleteContactById(Contact contact, TokenDto tokenDto){
         return given()
@@ -72,7 +89,4 @@ public class ContactController implements BaseAPI {
                 .delete(ADD_NEW_CONTACT_URL+"/"+contact.getId())
                 .thenReturn();
     }
-
-
-
 }

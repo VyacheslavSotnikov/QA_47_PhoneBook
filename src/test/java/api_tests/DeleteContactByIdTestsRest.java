@@ -1,10 +1,12 @@
 package api_tests;
 
 import dto.Contact;
+import dto.ErrorMessageDto;
 import dto.ResponseMessageDto;
 import dto.TokenDto;
 import io.restassured.response.Response;
 import manager.ContactController;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -56,5 +58,26 @@ public class DeleteContactByIdTestsRest extends ContactController {
                 .statusCode(401)
                 .body(matchesJsonSchemaInClasspath("ErrorMessageDtoSchema.json"))
         ;
+    }
+
+    @Test
+    public void deleteContactByIdNegativeTest_ContactNotFound() {
+        Contact nonExistingContact = Contact.builder()
+                .id("00000000-0000-0000-0000-000000000000")
+                .build();
+
+        Response response = deleteContactById(nonExistingContact, tokenDto);
+
+        response
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body(matchesJsonSchemaInClasspath("ErrorMessageDtoSchema.json"));
+
+        ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
+        Assert.assertEquals(error.getStatus(), 400);
+        Assert.assertEquals(error.getError(), "Bad Request");
+        Assert.assertTrue(error.getMessage().toString()
+                        .contains("Contact with id: 00000000-0000-0000-0000-000000000000 not found"));
     }
 }
