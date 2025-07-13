@@ -8,11 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import utils.WDListener;
 
 import java.time.Duration;
+import org.openqa.selenium.safari.SafariDriver;
 
 public class ApplicationManager {
+    static String browser = System.getProperty("browser", "chrome");
     private WebDriver driver;
 
     public WebDriver getDriver(){
@@ -24,7 +27,21 @@ public class ApplicationManager {
     @BeforeMethod(alwaysRun = true)
     public void setup(){
         // logger.info("Start test --> "+ LocalDate.now());
-        driver = new ChromeDriver();
+        // driver = new ChromeDriver();
+        switch(browser.toLowerCase()){
+            case "safari":
+                driver  = new SafariDriver();
+                logger.info("Start test in Safari");
+                break;
+            case "chrome":
+                driver = new ChromeDriver();
+                logger.info("Start test in Chrome");
+                break;
+            default:
+                driver = new ChromeDriver();
+                logger.info("Start test in Chrome");
+                break;
+        }
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         WebDriverListener webDriverListener = new WDListener();

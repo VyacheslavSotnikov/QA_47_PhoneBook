@@ -42,8 +42,53 @@ task smoke_tests(type: Test){
     }
 }
 
-task smoke_tests_api(type: Test){
+task contact_tests(type: Test){
     useTestNG(){
+        suites 'src/test/resources/contact_tests.xml'
+    }
+}
+
+task smoke_tests_api(type: Test) {
+    useTestNG() {
         suites 'src/test/resources/smoke-tests_api.xml'
+    }
+}
+
+task contact_tests_api(type: Test) {
+        useTestNG() {
+            suites 'src/test/resources/contact_tests_api.xml'
+        }
+    }
+
+task login_tests_browser(type: Test){
+    useTestNG() {
+        if (project.hasProperty('browser')) {
+            systemProperty 'browser', "${browser}"
+        }
+        suites 'src/test/resources/login-tests.xml'
+    }
+}
+
+task different_tests(type: Test){
+    useTestNG() {
+        if (project.hasProperty('browser')) {
+            systemProperty 'browser', "${browser}"
+        }
+        def suite = System.getProperty('suite', 'smoke_tests')
+        if (suite.equalsIgnoreCase('smoke_tests')) {
+            suites 'src/test/resources/smoke-tests.xml'
+        } else if (suite.equalsIgnoreCase('smoke_tests_api')) {
+            suites 'src/test/resources/smoke-tests_api.xml'
+        } else if (suite.equalsIgnoreCase('login_tests_browser')) {
+            suites 'src/test/resources/login-tests.xml'
+        } else {
+            suites 'src/test/resources/smoke-tests.xml'
+        }
+    }
+}
+
+task parameter(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/parameters/parameter1.xml'
     }
 }

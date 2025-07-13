@@ -1,0 +1,11 @@
+cd /Volumes/Seagate/QA_47_AutoProjects/QA_47_PhoneBook
+./gradlew clean smoke_tests
+./gradlew clean smoke_tests_api
+./gradlew clean login_tests_browser
+./gradlew clean -Pbrowser=safari login_tests_browser
+
+./gradlew clean different_tests
+./gradlew clean -Dsuite=smoke_tests_api different_tests
+./gradlew clean -Dsuite=login_tests_browser different_tests
+./gradlew clean -Pbrowser=safari -Dsuite=login_tests_browser different_tests
+./gradlew clean -Pbrowser=wrong -Dsuite=login_tests_browser different_tests
