@@ -1,4 +1,4 @@
-cd /Volumes/Seagate/QA_47_AutoProjects/QA_47_PhoneBook
+cd /Volumes/Seagate/QA_47_AutoProjects/QA_47_PhoneBook //
 ./gradlew clean smoke_tests
 ./gradlew clean smoke_tests_api
 ./gradlew clean login_tests_browser
