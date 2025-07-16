@@ -2,6 +2,7 @@ package manager;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.WebDriverListener;
 import org.slf4j.Logger;
@@ -28,17 +29,19 @@ public class ApplicationManager {
     public void setup(){
         // logger.info("Start test --> "+ LocalDate.now());
         // driver = new ChromeDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
         switch(browser.toLowerCase()){
             case "safari":
                 driver  = new SafariDriver();
                 logger.info("Start test in Safari");
                 break;
             case "chrome":
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(chromeOptions);
                 logger.info("Start test in Chrome");
                 break;
             default:
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(chromeOptions);
                 logger.info("Start test in Chrome");
                 break;
         }
